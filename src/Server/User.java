@@ -3,20 +3,16 @@ package Server;
 import java.io.*;
 import java.net.Socket;
 
-public class User extends Thread {
+public class User{
     private String username;
     private Socket socket;
-    private BufferedReader in;
-    private BufferedWriter out;
 
-    public User(String username, Socket socket) throws IOException {
-        this.username = username;
+    public User(Socket socket) throws IOException {
         this.socket = socket;
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        start();
     }
-
+    public void setUsername(String username){
+        this.username = username;
+    }
     public String getUsername() {
         return username;
     }
