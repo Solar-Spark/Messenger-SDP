@@ -1,14 +1,25 @@
 package Server;
 
 import java.io.*;
-import java.net.Socket;
+import java.util.ArrayList;
 
 public class User{
     private String username;
-    private Socket socket;
+    private UserConnection userCon;
+    private boolean connected;
+    private ArrayList<String> messages = new ArrayList<>();
 
-    public User(Socket socket) throws IOException {
-        this.socket = socket;
+    public void setUserCon(UserConnection userCon){
+        this.userCon = userCon;
+    }
+    public UserConnection getUserCon(){
+        return userCon;
+    }
+    public void sendMessage(String msg) throws IOException{
+        userCon.sendMessage(msg);
+    }
+    public String receiveMessage() throws IOException{
+        return messages.getLast();
     }
     public void setUsername(String username){
         this.username = username;
@@ -16,11 +27,14 @@ public class User{
     public String getUsername() {
         return username;
     }
-    public Socket getSocket() {
-        return socket;
+    public void setConnected(boolean connected){
+        this.connected = connected;
     }
-
-    public void setSocket(Socket socket) {
-        this.socket = socket;
+    public boolean isConnected(){
+        return connected;
+    }
+    public void addMessage(String msg){
+        messages.add(msg);
+        System.out.println("Messages + " + messages.getLast());
     }
 }

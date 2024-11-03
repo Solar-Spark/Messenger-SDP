@@ -10,6 +10,6 @@ public class ServerMain {
         ServerSocket server = null;
         server = new ServerSocket(PORT);
 
-        ConnectionController connectionController = new ConnectionController(server);
+        UserConnectionController connectionController = new UserConnectionController(server);
     }
 }
