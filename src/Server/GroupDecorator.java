@@ -59,4 +59,8 @@ public class GroupDecorator implements Chat{
             }
         }
     }
+    @Override
+    public String getName(User user) {
+        return groupName;
+    }
 }

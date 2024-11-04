@@ -31,6 +31,22 @@ public class MessageListener {
                 int chatId = Integer.parseInt(params[1]);
                 ChatsController.getChat(chatId).sendMessage(msg);
             }
+            else if (params[0].equals("getChatName")){
+                int chatId = Integer.parseInt(params[1]);
+                User user = msg.getUser();
+                user.sendMessage("chatName;" + chatId + ";" + ChatsController.getChat(chatId).getName(user));
+            }
+            else if (params[0].equals("getChatIds")){
+                User user = msg.getUser();
+                String message = "chatIds";
+                for(int id : user.getChatIds()){
+                    message +=  ";" + id;
+                }
+                user.sendMessage(message);
+            }
+            else if (params[0].equals("disconnect")){
+                msg.getUser().getUserCon().close();
+            }
             return null;
         }
         public static void setUsername(User user, String username){

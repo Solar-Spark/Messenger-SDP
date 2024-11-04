@@ -13,14 +13,10 @@ public class User{
     public void addChat(int id){
         chatIds.add(id);
     }
-
     public boolean isChat(int id){
         return chatIds.contains(id);
     }
     public ArrayList<Integer> getChatIds(){
-        if(chatIds.isEmpty()){
-            return null;
-        }
         return chatIds;
     }
     public void setUserCon(UserConnection userCon){

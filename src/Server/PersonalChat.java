@@ -50,4 +50,14 @@ public class PersonalChat implements Chat {
     public int getId(){
         return id;
     }
+
+    @Override
+    public String getName(User user){
+        for(User usr : users){
+            if(usr != user){
+                return usr.getUsername();
+            }
+        }
+        return null;
+    }
 }

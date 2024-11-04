@@ -10,5 +10,6 @@ public interface Chat {
     void getMessages(User user) throws IOException;
     ArrayList<Message> getMessagesHistory() throws IOException;
     ArrayList<User> getUsers() throws IOException;
+    String getName(User user);
     int getId();
 }
