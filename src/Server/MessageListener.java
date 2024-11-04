@@ -20,7 +20,7 @@ public class MessageListener {
                 UserController.getUser(params[1]).sendMessage("chatId;" + id);
             }
             else if(params[0].equals("createGroup")){
-                int id = ChatsController.create(new Group(params[1]));
+                int id = ChatsController.create(new GroupDecorator(new PersonalChat(), params[1]));
                 Chat group = ChatsController.getChat(id);
                 for(int i = 2; i < params.length; i++) {
                     group.subscribe(UserController.getUser(params[i]));
@@ -30,6 +30,22 @@ public class MessageListener {
             else if (params[0].equals("chat")){
                 int chatId = Integer.parseInt(params[1]);
                 ChatsController.getChat(chatId).sendMessage(msg);
+            }
+            else if (params[0].equals("getChatName")){
+                int chatId = Integer.parseInt(params[1]);
+                User user = msg.getUser();
+                user.sendMessage("chatName;" + chatId + ";" + ChatsController.getChat(chatId).getName(user));
+            }
+            else if (params[0].equals("getChatIds")){
+                User user = msg.getUser();
+                String message = "chatIds";
+                for(int id : user.getChatIds()){
+                    message +=  ";" + id;
+                }
+                user.sendMessage(message);
+            }
+            else if (params[0].equals("disconnect")){
+                msg.getUser().getUserCon().close();
             }
             return null;
         }

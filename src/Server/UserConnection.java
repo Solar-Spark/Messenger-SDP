@@ -2,12 +2,14 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class UserConnection{
     private BufferedReader in;
     private BufferedWriter out;
     private User user;
     private Socket socket;
+    ReadMsg readMsg;
 
     public UserConnection(Socket socket, User user) throws IOException {
         this.user = user;
@@ -15,7 +17,7 @@ public class UserConnection{
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         user.setUserCon(this);
-        ReadMsg readMsg = new ReadMsg();
+        readMsg = new ReadMsg();
         readMsg.start();
     }
 
@@ -28,16 +30,27 @@ public class UserConnection{
                 user.setConnected(true);
                 UserController.addUser(user);
                 System.out.println("User " + username + " is registered");
+                sendMessage("status;connected");
                 break;
             }
             else{
-                userFromList.setUserCon(this);
-                userFromList.setConnected(true);
-                System.out.println("User " + username + " is logged in");
-                for(int chatId : userFromList.getChatIds()){
-                    ChatsController.getChat(chatId).getMessages(userFromList);
+                if(userFromList.isConnected()){
+                    sendMessage("status;busy");
+                    break;
                 }
-                break;
+                else{
+                    userFromList.setUserCon(this);
+                    userFromList.setConnected(true);
+                    sendMessage("status;connected");
+                    System.out.println("User " + username + " is logged in");
+                    ArrayList<Integer> chatIds = userFromList.getChatIds();
+                    if(!chatIds.isEmpty()){
+                        for(int chatId : chatIds){
+                            ChatsController.getChat(chatId).getMessages(userFromList);
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
@@ -45,7 +58,13 @@ public class UserConnection{
     public Socket getSocket() {
         return socket;
     }
-
+    public void close() throws IOException {
+        readMsg.interrupt();
+        user.setConnected(false);
+        in.close();
+        out.close();
+        socket.close();
+    }
     private class ReadMsg extends Thread {
         @Override
         public void run() {
@@ -55,9 +74,12 @@ public class UserConnection{
                     MessageListener.parse(msg);
                     //System.out.println(user.getUsername() + " printed " + msg.getMessageText());
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 user.setConnected(false);
-                System.err.println("Error: " + e.getMessage());
+                System.out.println(e.getMessage());
+                String username = user.getUsername();
+                System.out.println((username == null ? "User" : user.getUsername()) + " has logged out");
             }
         }
     }
@@ -76,8 +98,9 @@ public class UserConnection{
             try {
                 out.write(msg + "\n");
                 out.flush();
+                interrupt();
             } catch (IOException e) {
-                System.err.println("Error: " + e.getMessage());
+                System.err.println("Out disconnected");
             }
         }
     }

@@ -19,11 +19,12 @@ public class PersonalChat implements Chat {
     public void unsubscribe(User user) {
         users.remove(user);
     }
+
     public void sendMessage(Message msg) throws IOException {
         messages.add(msg);
         for(User user : users){
             if(user != msg.getUser()){
-                if(user.isChat(id)){
+                if(user.hasChat(id)){
                     user.sendMessage("chat;" + id + ";" + msg.getMessageText().split(";")[2]);
                 }
             }
@@ -36,7 +37,28 @@ public class PersonalChat implements Chat {
             }
         }
     }
+
+    @Override
+    public ArrayList<Message> getMessagesHistory() throws IOException {
+        return messages;
+    }
+
+    @Override
+    public ArrayList<User> getUsers() throws IOException {
+        return users;
+    }
+
     public int getId(){
         return id;
+    }
+
+    @Override
+    public String getName(User user){
+        for(User usr : users){
+            if(usr != user){
+                return usr.getUsername();
+            }
+        }
+        return null;
     }
 }
