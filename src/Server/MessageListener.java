@@ -23,8 +23,8 @@ public class MessageListener {
                 Chat group = ChatsController.getChat(id);
                 for(int i = 2; i < params.length; i++) {
                     group.subscribe(UserController.getUser(params[i]));
-                    UserController.getUser(params[i]).sendMessage("chatId;" + id);
                 }
+                group.sendMessage("chatId;" + id);
             }
             else if (params[0].equals("chat")){
                 int chatId = Integer.parseInt(params[1]);
