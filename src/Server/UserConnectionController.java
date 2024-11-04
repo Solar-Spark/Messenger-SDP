@@ -5,13 +5,19 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class UserConnectionController extends Thread {
+    private static UserConnectionController instance = null;
     private static ServerSocket server;
 
-    public UserConnectionController(ServerSocket server) {
+    private UserConnectionController(ServerSocket server) {
         this.server = server;
         start();
     }
-
+    public static UserConnectionController getInstance(ServerSocket server) {
+        if (instance == null) {
+            instance = new UserConnectionController(server);
+        }
+        return instance;
+    }
     public void run() {
         try {
             monitorConnections();

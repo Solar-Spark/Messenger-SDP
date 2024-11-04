@@ -12,21 +12,21 @@ public class MessageListener {
                 return params[1];
             }
             else if(params[0].equals("createChat")){
-                int id = ChatsController.create(new Chat());
-                Chat chat = ChatsController.getChat(id);
-                chat.subscribe(msg.getUser());
-                chat.subscribe(UserController.getUser(params[1]));
+                int id = ChatsController.create(new PersonalChat());
+                Chat personalChat = ChatsController.getChat(id);
+                personalChat.subscribe(msg.getUser());
+                personalChat.subscribe(UserController.getUser(params[1]));
                 msg.getUser().sendMessage("chatId;" + id);
                 UserController.getUser(params[1]).sendMessage("chatId;" + id);
             }
-            /*else if(params[0].equals("createGroup")){
+            else if(params[0].equals("createGroup")){
                 int id = ChatsController.create(new Group(params[1]));
-                Group group = ChatsController.getChat(id);
-                chat.subscribe(msg.getUser());
-                chat.subscribe(UserController.getUser(params[1]));
-                msg.getUser().sendMessage("chatId;" + id);
-                UserController.getUser(params[1]).sendMessage("chatId;" + id);
-            }*/
+                Chat group = ChatsController.getChat(id);
+                for(int i = 2; i < params.length; i++) {
+                    group.subscribe(UserController.getUser(params[i]));
+                    UserController.getUser(params[i]).sendMessage("chatId;" + id);
+                }
+            }
             else if (params[0].equals("chat")){
                 int chatId = Integer.parseInt(params[1]);
                 ChatsController.getChat(chatId).sendMessage(msg);
