@@ -36,6 +36,17 @@ public class PersonalChat implements Chat {
             }
         }
     }
+
+    @Override
+    public ArrayList<Message> getMessagesHistory() throws IOException {
+        return messages;
+    }
+
+    @Override
+    public ArrayList<User> getUsers() throws IOException {
+        return users;
+    }
+
     public int getId(){
         return id;
     }
