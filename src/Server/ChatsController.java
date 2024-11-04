@@ -1,17 +1,20 @@
 package Server;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChatsController {
-    ArrayList<Chat> chats;
-    ArrayList<Group> groups;
+    private static Map<Integer, Chat> chats = new HashMap<Integer, Chat>();
 
-    public void createChat(Chat chat) {
-        chats.add(chat);
+    public static int create(PersonalChat personalChat) {
+        chats.put(personalChat.getId(), personalChat);
+        return personalChat.getId();
     }
-
-    public void createGroup(Group group) {
-        groups.add(group);
+    public static int create(Group group) {
+        chats.put(group.getId(), group);
+        return group.getId();
     }
-
+    public static Chat getChat(int id) {
+        return chats.get(id);
+    }
 }

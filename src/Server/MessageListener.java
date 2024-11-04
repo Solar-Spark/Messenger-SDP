@@ -3,11 +3,37 @@ package Server;
 import java.io.IOException;
 
 public class MessageListener {
-        public static void parse(String msg) throws IOException {
-            String[] params = msg.split(";");
+
+        public static String parse(Message msg) throws IOException {
+            String[] params = msg.getMessageText().split(";");
             if(params[0].equals("reg")){
-                System.out.println(params[1]);
-                UserConnectionController.authentication(params[1]);
+                setUsername(msg.getUser(), params[1]);
+                msg.getUser().getUserCon().authenticate(params[1]);
+                return params[1];
             }
+            else if(params[0].equals("createChat")){
+                int id = ChatsController.create(new PersonalChat());
+                Chat personalChat = ChatsController.getChat(id);
+                personalChat.subscribe(msg.getUser());
+                personalChat.subscribe(UserController.getUser(params[1]));
+                msg.getUser().sendMessage("chatId;" + id);
+                UserController.getUser(params[1]).sendMessage("chatId;" + id);
+            }
+            else if(params[0].equals("createGroup")){
+                int id = ChatsController.create(new Group(params[1]));
+                Chat group = ChatsController.getChat(id);
+                for(int i = 2; i < params.length; i++) {
+                    group.subscribe(UserController.getUser(params[i]));
+                    UserController.getUser(params[i]).sendMessage("chatId;" + id);
+                }
+            }
+            else if (params[0].equals("chat")){
+                int chatId = Integer.parseInt(params[1]);
+                ChatsController.getChat(chatId).sendMessage(msg);
+            }
+            return null;
+        }
+        public static void setUsername(User user, String username){
+            user.setUsername(username);
         }
 }
