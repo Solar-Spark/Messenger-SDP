@@ -19,11 +19,12 @@ public class PersonalChat implements Chat {
     public void unsubscribe(User user) {
         users.remove(user);
     }
+
     public void sendMessage(Message msg) throws IOException {
         messages.add(msg);
         for(User user : users){
             if(user != msg.getUser()){
-                if(user.isChat(id)){
+                if(user.hasChat(id)){
                     user.sendMessage("chat;" + id + ";" + msg.getMessageText().split(";")[2]);
                 }
             }

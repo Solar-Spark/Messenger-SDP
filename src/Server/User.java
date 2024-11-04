@@ -13,7 +13,7 @@ public class User{
     public void addChat(int id){
         chatIds.add(id);
     }
-    public boolean isChat(int id){
+    public boolean hasChat(int id){
         return chatIds.contains(id);
     }
     public ArrayList<Integer> getChatIds(){

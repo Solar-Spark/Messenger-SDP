@@ -1,6 +1,5 @@
 package Server;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -53,7 +52,7 @@ public class GroupDecorator implements Chat{
         chat.getMessagesHistory().add(msg);
         for(User user : chat.getUsers()){
             if(user != msg.getUser()){
-                if(user.isChat(chat.getId())){
+                if(user.hasChat(chat.getId())){
                     user.sendMessage("group;" + chat.getId() + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
                 }
             }
