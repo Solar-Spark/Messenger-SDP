@@ -30,6 +30,13 @@ public class PersonalChat implements Chat {
             }
         }
     }
+    public void sendMessage(String msg) throws IOException {
+        for(User user : users){
+            if(user.hasChat(id)){
+                user.sendMessage(msg);
+            }
+        }
+    }
     public void getMessages(User user) throws IOException {
         if(!messages.isEmpty()) {
             for (Message msg : messages) {

@@ -58,6 +58,16 @@ public class GroupDecorator implements Chat{
             }
         }
     }
+
+    @Override
+    public void sendMessage(String msg) throws IOException {
+        for(User user : chat.getUsers()){
+            if(user.hasChat(chat.getId())){
+                user.sendMessage("group;" + chat.getId() + ";" + msg.split(";")[2]);
+            }
+        }
+    }
+
     @Override
     public String getName(User user) {
         return groupName;

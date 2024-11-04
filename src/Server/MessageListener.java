@@ -16,8 +16,7 @@ public class MessageListener {
                 Chat personalChat = ChatsController.getChat(id);
                 personalChat.subscribe(msg.getUser());
                 personalChat.subscribe(UserController.getUser(params[1]));
-                msg.getUser().sendMessage("chatId;" + id);
-                UserController.getUser(params[1]).sendMessage("chatId;" + id);
+                personalChat.sendMessage("chatId;" + id);
             }
             else if(params[0].equals("createGroup")){
                 int id = ChatsController.create(new GroupDecorator(new PersonalChat(), params[1]));
