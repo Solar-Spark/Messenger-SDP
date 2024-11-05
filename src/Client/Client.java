@@ -35,6 +35,40 @@ public class Client {
         }
     }
 
+    //Methods which are sending commands to the server
+    private String sendCommand(String command) throws IOException {
+        out.write(command + "\n");
+        out.flush();
+        return in.readLine();
+    }
+    public String registerUser(String username) throws IOException{
+        String command = "reg;" + username;
+        return sendCommand(command);
+    }
+    public String createChat(String receiverUsername) throws IOException {
+        String command = "createChat;" + receiverUsername;
+        return sendCommand(command);
+    }
+    public String createGroup(String groupName, String... members) throws IOException {
+        String command = "createGroup;" + groupName + ";" + String.join(";", members);
+        return sendCommand(command);
+    }
+    public String sendMessage(int chatid, String message) throws IOException {
+        String command = "chat;" + chatid + ";" + message;
+        return sendCommand(command);
+    }
+    public String getChatName(int chatid) throws IOException {
+        String command = "getChatName;" + chatid;
+        return sendCommand(command);
+    }
+    public String getChatIds() throws IOException {
+        String command = "getChatIds;";
+        return sendCommand(command);
+    }
+    public void disconnect() throws IOException {
+        closeResources();
+    }
+
     public static void main(String[] args) {
         // Запускаем клиента на указанном хосте и порту
         new Client("localhost", 8080);
