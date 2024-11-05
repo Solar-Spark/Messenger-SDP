@@ -69,10 +69,10 @@ public class Client {
         closeResources();
     }
 
-    public static void main(String[] args) {
-        // Запускаем клиента на указанном хосте и порту
-        new Client("localhost", 8080);
-    }
+//    public static void main(String[] args) {
+//        // Запускаем клиента на указанном хосте и порту
+//        new Client("localhost", 8080);
+//    }
 
     // Поток для чтения сообщений от сервера
     private class ReadMsg extends Thread {
