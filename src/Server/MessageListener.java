@@ -46,6 +46,10 @@ public class MessageListener {
             else if (params[0].equals("disconnect")){
                 msg.getUser().getUserCon().close();
             }
+            else if (params[0].equals("getMessages")){
+                int chatId = Integer.parseInt(params[1]);
+                ChatsController.getChat(chatId).getMessages(msg.getUser());
+            }
             return null;
         }
         public static void setUsername(User user, String username){

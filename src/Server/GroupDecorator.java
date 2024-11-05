@@ -22,7 +22,11 @@ public class GroupDecorator implements Chat{
 
     @Override
     public void getMessages(User user) throws IOException {
-        chat.getMessages(user);
+        if(!chat.getMessagesHistory().isEmpty()) {
+            for (Message msg : chat.getMessagesHistory()) {
+                user.sendMessage("group;" + chat.getId() + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
+            }
+        }
     }
 
     @Override
