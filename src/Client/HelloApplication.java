@@ -16,12 +16,22 @@ import java.util.regex.Pattern;
 
 public class HelloApplication extends Application {
 
+
+    private static TextArea chatArea;
+
+    public TextArea getChatArea() {
+        return chatArea;
+    }
+
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) {
+
+
         // Create the main UI components for IP input
         TextField ipTextField = new TextField();
         ipTextField.setPromptText("Enter IP address (e.g., 192.168.1.1)");
@@ -201,7 +211,7 @@ public class HelloApplication extends Application {
         chatList.getItems().addAll("Chat 1", "Chat 2", "Chat 3", "Chat 4", "Chat 5", "Chat 6");
 
         // Create the chat area on the right (taking more space)
-        TextArea chatArea = new TextArea();
+        chatArea = new TextArea();
         chatArea.setEditable(false); // User shouldn't edit chat messages
         chatArea.setPrefHeight(300);
 
@@ -287,25 +297,10 @@ public class HelloApplication extends Application {
                 System.out.println("Selected chat: " + selectedChat);
 
                 // For now, we can show the history of the selected chat in the chat area
-                chatArea.setText(getChatHistory(selectedChat)); // Populate chat area with history of the selected chat
+                //chatArea.setText(); // Populate chat area with history of the selected chat
             }
         });
     }
 
 
-    // Method to simulate retrieving chat history for a specific chat
-    private String getChatHistory(String chatName) {
-        // Placeholder chat history for each chat
-        String[] histories = {
-                "Chat 1 history: Welcome to Chat 1.",
-                "Chat 2 history: Welcome to Chat 2.",
-                "Chat 3 history: Welcome to Chat 3.",
-                "Chat 4 history: Welcome to Chat 4.",
-                "Chat 5 history: Welcome to Chat 5.",
-                "Chat 6 history: Welcome to Chat 6."
-        };
-
-        // Return mock chat history based on the selected chat name
-        return histories[Arrays.asList("Chat 1", "Chat 2", "Chat 3", "Chat 4", "Chat 5", "Chat 6").indexOf(chatName)];
-    }
 }
