@@ -18,10 +18,14 @@ public class HelloApplication extends Application {
 
 
     private static TextArea chatArea;
+    private static ListView<String> chatList;
 
     public TextArea getChatArea() {
         return chatArea;
     }
+
+
+    //create func getChatList(){}
 
 
     public static void main(String[] args) {
@@ -186,7 +190,7 @@ public class HelloApplication extends Application {
         chatStage.setTitle("Chat - " + nickname);
 
         // Create the chat list on the left (fixed width)
-        ListView<String> chatList = new ListView<>();
+        chatList = new ListView<>();
         chatList.setPrefWidth(250);
         chatList.setMaxHeight(300);
 
@@ -208,7 +212,7 @@ public class HelloApplication extends Application {
             return cell;
         });
 
-        chatList.getItems().addAll("Chat 1", "Chat 2", "Chat 3", "Chat 4", "Chat 5", "Chat 6");
+        chatList.getItems().addAll();
 
         // Create the chat area on the right (taking more space)
         chatArea = new TextArea();
@@ -276,15 +280,11 @@ public class HelloApplication extends Application {
 
 
         createChatButton.setOnAction(event -> {
-            // Placeholder: Create a new individual chat
-            System.out.println("Creating a new individual chat...");
-            // You could add a dialog or window to enter the new chat details
+           openCreateChatWindow();
         });
 
         createGroupChatButton.setOnAction(event -> {
-            // Placeholder: Create a new group chat
-            System.out.println("Creating a new group chat...");
-            // Similar to individual chat, you could add a dialog for group creation
+
         });
 
         // Event listener for selecting a chat from the list
@@ -300,6 +300,54 @@ public class HelloApplication extends Application {
                 //chatArea.setText(); // Populate chat area with history of the selected chat
             }
         });
+    }
+
+     //Open create chat window
+     private void openCreateChatWindow() {
+       Stage createChatStage = new Stage();
+       createChatStage.setTitle("Create chat");
+
+        // UI components for nickname input
+        TextField createChatTextField = new TextField();
+        createChatTextField.setPromptText("Enter nickname (e.g., JohnDoe)");
+
+        // Bind the TextField's preferred width to 60% of the window width
+        createChatTextField.prefWidthProperty().bind(createChatStage.widthProperty().multiply(0.6));
+
+        Button submitButton = new Button("Submit");
+
+        // Layout for the creat chat window
+        VBox createChatLayout = new VBox(10);
+        createChatLayout.setAlignment(Pos.CENTER);
+
+        // Centering input area using HBox
+        HBox createChatInputContainer = new HBox();
+        createChatInputContainer.setAlignment(Pos.CENTER);
+        createChatInputContainer.getChildren().add(createChatTextField);
+
+        createChatLayout.getChildren().addAll(createChatInputContainer, submitButton);
+
+        // Event handler for submitting nickname
+        submitButton.setOnAction(event -> {
+            String nickname = createChatTextField.getText();
+            if (!nickname.trim().isEmpty()) {
+                System.out.println("Creat chat username's nickname: " + nickname);
+                createChatStage.close(); // Close nickname window
+
+            } else {
+                // If nickname is empty, show error message
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Nickname cannot be empty!", ButtonType.OK);
+                alert.showAndWait();
+            }
+        });
+
+        // Setup the nickname stage with consistent size (400x200)
+        Scene creatChatScene = new Scene(createChatLayout, 400, 200); // Window size 400x200
+        createChatStage.setScene(creatChatScene);
+        createChatStage.show();
+
+        // Set focus to the Nickname TextField automatically when the window opens
+        createChatTextField.requestFocus();
     }
 
 
