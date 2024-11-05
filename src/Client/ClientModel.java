@@ -78,6 +78,7 @@ public class ClientModel {
     }
     public static void addChat(int chatId) throws IOException {
         chatList.put(chatId, chatName);
+        ClientViewModel.addChat(chatId, chatName);
     }
     public static void receiveMessage(int chatId, String message) throws IOException {
         ClientViewModel.receiveMessage(chatList.get(chatId) + ": " + message + "\n");

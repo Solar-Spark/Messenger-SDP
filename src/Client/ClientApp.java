@@ -11,6 +11,8 @@ import javafx.scene.text.*;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +20,7 @@ public class ClientApp extends Application {
 
 
     private static TextArea chatArea;
+    private static Map<String, Integer> chatMap = new HashMap<String, Integer>();
     private static ListView<String> chatList;
 
     public static TextArea getChatArea() {
@@ -26,6 +29,10 @@ public class ClientApp extends Application {
 
     public static ListView<String> getChatList() {
         return chatList;
+    }
+
+    public static Map<String, Integer> getChatMap() {
+        return chatMap;
     }
 
     public static void main(String[] args) {
@@ -321,7 +328,11 @@ public class ClientApp extends Application {
         chatList.setOnMouseClicked(event -> {
             // Get the selected item from the list
             String selectedChat = chatList.getSelectionModel().getSelectedItem();
-
+            try {
+                ClientViewModel.setChatId(getChatMap().get(selectedChat));
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
+            }
             if (selectedChat != null) {
 
                 // Display the selected chat's history or open chat window

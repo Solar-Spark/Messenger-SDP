@@ -30,4 +30,8 @@ public class ClientViewModel {
     public static void initClientModel(String host) throws IOException {
         ClientModel.clientModelInit(host, 8080);
     }
+    public static void addChat(int chatId, String chatName) throws IOException {
+        ClientApp.getChatMap().put(chatName, chatId);
+        ClientApp.getChatList().getItems().add(chatName);
+    }
 }
