@@ -19,7 +19,7 @@ public class ClientModel {
     private static Map<Integer, String> chatList = new HashMap<>();
     private static String chatName;
 
-    public ClientModel(String host, int port) {
+    public void clientModelInit(String host, int port) {
         try {
             // Создаем сокетное соединение с сервером
             clientSocket = new Socket(host, port);
@@ -90,7 +90,7 @@ public class ClientModel {
     }
 
     // Поток для чтения сообщений от сервера
-    private class ReadMsg extends Thread {
+    private static class ReadMsg extends Thread {
         @Override
         public void run() {
             try {
