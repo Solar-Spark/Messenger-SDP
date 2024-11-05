@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HelloApplication extends Application {
+public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
