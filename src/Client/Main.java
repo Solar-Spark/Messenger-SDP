@@ -29,6 +29,7 @@ public class Main extends Application {
         // Bind the TextField's preferred width to 60% of the window width
         ipTextField.prefWidthProperty().bind(primaryStage.widthProperty().multiply(0.6));
 
+        //
         Button validateButton = new Button("Validate IP");
         Label errorLabel = new Label();
         errorLabel.setStyle("-fx-text-fill: red;");
