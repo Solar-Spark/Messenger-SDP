@@ -19,12 +19,12 @@ public class ConnectedState implements ClientState{
         return command;
     }
     @Override
-    public String sendMessage(int chatid, String message) {
-        return "chat;" + chatid + ";" + message;
+    public String sendMessage(int chatId, String message) {
+        return "chat;" + chatId + ";" + message;
     }
     @Override
-    public String getChatName(int chatid) {
-        return "getChatName;" + chatid;
+    public String getChatName(int chatId) {
+        return "getChatName;" + chatId;
     }
     @Override
     public String getChatIds() {
@@ -34,9 +34,5 @@ public class ConnectedState implements ClientState{
     public void disconnect() {
         ClientModel.setState(new DisconnectedState());
         ClientModel.closeResources();
-    }
-    @Override
-    public void receiveMessage(int chatid, String message) {
-        ClientViewModel.receiveMessage();
     }
 }

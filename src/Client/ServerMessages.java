@@ -20,7 +20,9 @@ public class ServerMessages {
                 break;
             case "group":
                 chatId = Integer.parseInt(params[1]);
-                ClientModel.receiveGroupMessage(chatId, params[2], params[3]);
+                ClientModel.receiveGroupMessage(params[2], params[3]);
+                break;
+            case "getMessages":
                 break;
             default:
                 break;
