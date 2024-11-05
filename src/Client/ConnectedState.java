@@ -2,38 +2,40 @@ package Client;
 
 public class ConnectedState implements ClientState{
     @Override
-    public String registerUser(Client client, String username) {
+    public String registerUser(String username) {
         String command = "reg;" + username;
         return command;
     }
     @Override
-    public String createChat(Client client, String receiverUsername) {
+    public String createChat(String receiverUsername) {
         String command = "createChat;" + receiverUsername;
         return command;
     }
     @Override
-    public String createGroup(Client client, String groupName, String... members) {
-        String command = "createGroup;" + groupName + ";" + String.join(";", members);
+    public String createGroup(String groupChat) {
+        String[] groupData = groupChat.split(",");
+        String command = "createGroup;" + groupData[0];
+        for (int i = 1; i < groupData.length; i++) {
+            command += ";" + groupData[i];
+        }
         return command;
     }
     @Override
-    public String sendMessage(Client client, int chatid, String message) {
+    public String sendMessage(int chatid, String message) {
         String command = "chat;" + chatid + ";" + message;
         return command;
     }
     @Override
-    public String getChatName(Client client, int chatid) {
-        String command = "getChatName;" + chatid;
-        return command;
+    public String getChatName(int chatid) {
+        return "getChatName;" + chatid;
     }
     @Override
-    public String getChatIds(Client client) {
-        String command = "getChatIds;";
-        return command;
+    public String getChatIds() {
+        return "getChatIds";
     }
     @Override
-    public void disconnect(Client client) {
-        client.setState(new DisconnectedState());
-        client.closeResources();
+    public void disconnect() {
+        ClientModel.setState(new DisconnectedState());
+        ClientModel.closeResources();
     }
 }
