@@ -10,4 +10,6 @@ public interface ClientState {
     String getChatName(int chatId) throws IOException;
     String getChatIds() throws IOException;
     void disconnect() throws IOException;
+    void receiveMessage(int chatId, String message) throws IOException;
+    void receiveGroupMessage(String username, String message) throws IOException;
 }

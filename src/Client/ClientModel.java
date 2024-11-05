@@ -1,8 +1,11 @@
 package Client;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ClientModel {
 
@@ -14,7 +17,8 @@ public class ClientModel {
     private static WriteMsg writeMsg;
     private static ClientState state;
     private static int currentChatId;
-    private static ArrayList<Integer> chatIds = new ArrayList<>();
+    private static Map<Integer, String> chatList = new HashMap<>();
+    private static String chatName;
 
     public ClientModel(String host, int port) {
         try {
@@ -62,8 +66,8 @@ public class ClientModel {
     public static String sendMessage(String message) throws IOException {
         return sendCommand(state.sendMessage(currentChatId, message));
     }
-    public static String getChatName(int chatid) throws IOException {
-        return sendCommand(state.getChatName(chatid));
+    public static String requestChatName(int chatId) throws IOException {
+        return sendCommand(state.getChatName(chatId));
     }
     public static String getChatIds() throws IOException {
         return sendCommand(state.getChatIds());
@@ -71,16 +75,21 @@ public class ClientModel {
     public static void disconnect() throws IOException {
         state.disconnect();
     }
-    public static void setChatId(int chatid) throws IOException {
-        currentChatId = chatid;
+    public static void setChatId(int chatId) throws IOException {
+        currentChatId = chatId;
     }
-    public static void receiveMessage(int chatid, String message) throws IOException {
-
+    public static void addChat(int chatId) throws IOException {
+        chatList.put(chatId, chatName);
     }
-//    public static void main(String[] args) {
-//        // Запускаем клиента на указанном хосте и порту
-//        new Client("localhost", 8080);
-//    }
+    public static void receiveMessage(int chatId, String message) throws IOException {
+        ClientViewModel.receiveMessage(chatList.get(chatId) + ": " + message + "\n");
+    }
+    public static void receiveGroupMessage(String username, String message) throws IOException {
+        ClientViewModel.receiveMessage(username + ": " + message + "\n");
+    }
+    public static void setChatName(String name) throws IOException {
+        chatName = name;
+    }
 
     // Поток для чтения сообщений от сервера
     private class ReadMsg extends Thread {
@@ -89,11 +98,7 @@ public class ClientModel {
             try {
                 String message;
                 while ((message = in.readLine()) != null) {
-                    if (message.equalsIgnoreCase("stop")) {
-                        System.out.println("Сервер завершил соединение.");
-                        break;
-                    }
-                    System.out.println("Сообщение от сервера: " + message);
+                    ServerMessages.parse(message);
                 }
             } catch (IOException e) {
                 System.err.println("Ошибка при чтении сообщения от сервера: " + e.getMessage());

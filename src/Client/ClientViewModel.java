@@ -19,10 +19,7 @@ public class ClientViewModel {
     public static void sendMessage(String message) throws IOException {
         ClientModel.sendMessage(message);
     }
-    public static String messageHistory()  throws IOException {
-
-    }
-    public static void receiveMessage(String username, String message) throws IOException {
-
+    public static void receiveMessage(String message) throws IOException {
+        HelloApplication.getChatArea().appendText(message);
     }
 }

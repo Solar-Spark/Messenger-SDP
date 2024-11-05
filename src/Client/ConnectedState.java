@@ -3,13 +3,11 @@ package Client;
 public class ConnectedState implements ClientState{
     @Override
     public String registerUser(String username) {
-        String command = "reg;" + username;
-        return command;
+        return "reg;" + username;
     }
     @Override
     public String createChat(String receiverUsername) {
-        String command = "createChat;" + receiverUsername;
-        return command;
+        return "createChat;" + receiverUsername;
     }
     @Override
     public String createGroup(String groupChat) {
@@ -22,8 +20,7 @@ public class ConnectedState implements ClientState{
     }
     @Override
     public String sendMessage(int chatid, String message) {
-        String command = "chat;" + chatid + ";" + message;
-        return command;
+        return "chat;" + chatid + ";" + message;
     }
     @Override
     public String getChatName(int chatid) {
@@ -37,5 +34,9 @@ public class ConnectedState implements ClientState{
     public void disconnect() {
         ClientModel.setState(new DisconnectedState());
         ClientModel.closeResources();
+    }
+    @Override
+    public void receiveMessage(int chatid, String message) {
+        ClientViewModel.receiveMessage();
     }
 }
