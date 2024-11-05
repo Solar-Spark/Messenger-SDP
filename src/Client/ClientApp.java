@@ -24,9 +24,9 @@ public class ClientApp extends Application {
         return chatArea;
     }
 
-
-    //create func getChatList(){}
-
+    public static ListView<String> getChatList() {
+        return chatList;
+    }
 
     public static void main(String[] args) {
         launch(args);
@@ -406,8 +406,6 @@ public class ClientApp extends Application {
 
         TextField groupChatMembersTextFiled = new TextField();
         groupChatMembersTextFiled.setPromptText("Enter group chat members");
-
-
 
         Button submitButton = new Button("Submit");
 
