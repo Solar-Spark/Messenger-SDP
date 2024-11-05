@@ -15,8 +15,13 @@ public class MessageListener {
                 int id = ChatsController.create(new PersonalChat());
                 Chat personalChat = ChatsController.getChat(id);
                 personalChat.subscribe(msg.getUser());
-                personalChat.subscribe(UserController.getUser(params[1]));
-                personalChat.sendMessage("chatId;" + id);
+                try{
+                    personalChat.subscribe(UserController.getUser(params[1]));
+                    personalChat.sendMessage("chatId;" + id);
+                }
+                catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
             }
             else if(params[0].equals("createGroup")){
                 int id = ChatsController.create(new GroupDecorator(new PersonalChat(), params[1]));
