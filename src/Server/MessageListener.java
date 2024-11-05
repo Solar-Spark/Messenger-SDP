@@ -22,6 +22,7 @@ public class MessageListener {
                 catch(Exception e){
                     System.out.println(e.getMessage());
                 }
+                System.out.println("Chat created, User: " + params[1]);
             }
             else if(params[0].equals("createGroup")){
                 int id = ChatsController.create(new GroupDecorator(new PersonalChat(), params[1]));
