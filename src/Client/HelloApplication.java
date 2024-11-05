@@ -20,7 +20,7 @@ public class HelloApplication extends Application {
     private static TextArea chatArea;
     private static ListView<String> chatList;
 
-    public TextArea getChatArea() {
+    public static TextArea getChatArea() {
         return chatArea;
     }
 
@@ -284,7 +284,7 @@ public class HelloApplication extends Application {
         });
 
         createGroupChatButton.setOnAction(event -> {
-
+              openCreateGroupChatWindow();
         });
 
         // Event listener for selecting a chat from the list
@@ -315,6 +315,7 @@ public class HelloApplication extends Application {
         createChatTextField.prefWidthProperty().bind(createChatStage.widthProperty().multiply(0.6));
 
         Button submitButton = new Button("Submit");
+        submitButton.prefWidthProperty().bind(createChatStage.widthProperty().multiply(0.6));
 
         // Layout for the creat chat window
         VBox createChatLayout = new VBox(10);
@@ -350,5 +351,64 @@ public class HelloApplication extends Application {
         createChatTextField.requestFocus();
     }
 
+
+
+    //Open create group chat window
+    private void openCreateGroupChatWindow() {
+        Stage createGroupChatStage = new Stage();
+        createGroupChatStage.setTitle("Create Group chat");
+
+        // UI components for nickname input
+        TextField groupChatNameTextFiled = new TextField();
+        groupChatNameTextFiled.setPromptText("Enter group chat name");
+
+        // Bind the TextField's preferred width to 60% of the window width
+       groupChatNameTextFiled.prefWidthProperty().bind(createGroupChatStage.widthProperty().multiply(0.6));
+
+        TextField groupChatMembersTextFiled = new TextField();
+        groupChatMembersTextFiled.setPromptText("Enter group chat members");
+
+        groupChatNameTextFiled.prefWidthProperty().bind(createGroupChatStage.widthProperty().multiply(0.6));
+
+        Button submitButton = new Button("Submit");
+
+        // Layout for the creat chat window
+        VBox createChatLayout = new VBox(10);
+        createChatLayout.setAlignment(Pos.CENTER);
+
+        // Centering input area using HBox
+        HBox createChatInputContainer = new HBox();
+        createChatInputContainer.setAlignment(Pos.CENTER);
+        createChatInputContainer.getChildren().add(groupChatNameTextFiled);
+        createChatInputContainer.getChildren().add(groupChatMembersTextFiled);
+
+        createChatLayout.getChildren().addAll(createChatInputContainer, submitButton);
+
+        // Event handler for submitting nickname
+        submitButton.setOnAction(event -> {
+
+            String groupChatName = groupChatNameTextFiled.getText();
+            String groupChatMembers = groupChatMembersTextFiled.getText();
+
+            if (!groupChatName.trim().isEmpty() && !groupChatMembers.trim().isEmpty()) {
+                System.out.println("Group chat name: " + groupChatName);
+                System.out.println("Group chat members: " + groupChatName);
+                createGroupChatStage.close(); // Close nickname window
+
+            } else {
+                // If nickname is empty, show error message
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Nickname cannot be empty!", ButtonType.OK);
+                alert.showAndWait();
+            }
+        });
+
+        // Setup the nickname stage with consistent size (400x200)
+        Scene creatChatScene = new Scene(createChatLayout, 400, 200); // Window size 400x200
+        createGroupChatStage.setScene(creatChatScene);
+        createGroupChatStage.show();
+
+        // Set focus to the Nickname TextField automatically when the window opens
+        groupChatNameTextFiled.requestFocus();
+    }
 
 }
