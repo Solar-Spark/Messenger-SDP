@@ -14,7 +14,6 @@ public class ClientModel {
     private static BufferedReader in;
     private static BufferedWriter out;
     private static ReadMsg readMsg;
-    private static WriteMsg writeMsg;
     private static ClientState state;
     private static int currentChatId;
     private static Map<Integer, String> chatList = new HashMap<>();
@@ -35,8 +34,6 @@ public class ClientModel {
             // Запускаем потоки для отправки и приема сообщений
             readMsg = new ReadMsg();
             readMsg.start();
-            writeMsg = new WriteMsg();
-            writeMsg.start();
 
         } catch (IOException e) {
             System.err.println("Ошибка при подключении к серверу: " + e.getMessage());
@@ -47,8 +44,7 @@ public class ClientModel {
     public static void setState(ClientState clientState) {
         state = clientState;
     }
-    //Methods which are sending commands to the server
-    private static String sendCommand(String command) throws IOException {
+    public static String sendCommand(String command) throws IOException {
         out.write(command + "\n");
         out.flush();
         return in.readLine();
@@ -65,7 +61,7 @@ public class ClientModel {
     public static String createGroup(String groupChat) throws IOException {
         return sendCommand(state.createGroup(groupChat));
     }
-    public static String sendMessage(String message) throws IOException {
+    public static String requestMessage(String message) throws IOException {
         return sendCommand(state.sendMessage(currentChatId, message));
     }
     public static String requestChatName(int chatId) throws IOException {
@@ -104,29 +100,6 @@ public class ClientModel {
                 }
             } catch (IOException e) {
                 System.err.println("Ошибка при чтении сообщения от сервера: " + e.getMessage());
-            } finally {
-                closeResources();
-            }
-        }
-    }
-
-    // Поток для отправки сообщений на сервер
-    private class WriteMsg extends Thread {
-        @Override
-        public void run() {
-            try {
-                String userInput;
-                while ((userInput = consoleReader.readLine()) != null) {
-                    if (userInput.equalsIgnoreCase("stop")) {
-                        out.write("stop\n");
-                        out.flush();
-                        break;
-                    }
-                    out.write(userInput + "\n");
-                    out.flush();
-                }
-            } catch (IOException e) {
-                System.err.println("Ошибка при отправке сообщения: " + e.getMessage());
             } finally {
                 closeResources();
             }
