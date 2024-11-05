@@ -32,6 +32,6 @@ public class ClientViewModel {
     }
     public static void addChat(int chatId, String chatName) throws IOException {
         ClientApp.getChatMap().put(chatName, chatId);
-        ClientApp.getChatList().getItems().add(chatName);
+        ClientApp.getChatList().getItems().addAll(chatName);
     }
 }
