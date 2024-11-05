@@ -1,4 +1,4 @@
-
+package Client;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -308,3 +308,4 @@ public class HelloApplication extends Application {
         // Return mock chat history based on the selected chat name
         return histories[Arrays.asList("Chat 1", "Chat 2", "Chat 3", "Chat 4", "Chat 5", "Chat 6").indexOf(chatName)];
     }
+}
