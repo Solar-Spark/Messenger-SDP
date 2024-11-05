@@ -35,4 +35,8 @@ public class ConnectedState implements ClientState{
         ClientModel.setState(new DisconnectedState());
         ClientModel.closeResources();
     }
+    @Override
+    public String getMessages(int chatId) {
+        return "getMessages;" + chatId;
+    }
 }

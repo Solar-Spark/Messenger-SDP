@@ -47,12 +47,14 @@ public class ClientModel {
     public static void setState(ClientState clientState) {
         state = clientState;
     }
-
     //Methods which are sending commands to the server
     private static String sendCommand(String command) throws IOException {
         out.write(command + "\n");
         out.flush();
         return in.readLine();
+    }
+    public static void getMessages() throws IOException {
+        sendCommand(state.getMessages(currentChatId));
     }
     public static String registerUser(String username) throws IOException{
         return sendCommand(state.registerUser(username));

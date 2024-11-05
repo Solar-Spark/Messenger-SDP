@@ -35,4 +35,10 @@ public class DisconnectedState implements ClientState {
     public void disconnect() {
         System.out.println("Already disconnected");
     }
+
+    @Override
+    public String getMessages(int chatId) {
+        System.out.println("User is not connected");
+        return "";
+    }
 }

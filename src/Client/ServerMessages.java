@@ -22,8 +22,6 @@ public class ServerMessages {
                 chatId = Integer.parseInt(params[1]);
                 ClientModel.receiveGroupMessage(params[2], params[3]);
                 break;
-            case "getMessages":
-                break;
             default:
                 break;
         }
