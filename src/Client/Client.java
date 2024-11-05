@@ -11,6 +11,7 @@ public class Client {
     private BufferedWriter out;
     private ReadMsg readMsg;
     private WriteMsg writeMsg;
+    private ClientState state;
 
     public Client(String host, int port) {
         try {
@@ -22,6 +23,7 @@ public class Client {
             consoleReader = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            state = new ConnectedState();
 
             // Запускаем потоки для отправки и приема сообщений
             readMsg = new ReadMsg();
@@ -35,6 +37,10 @@ public class Client {
         }
     }
 
+    public void setState(ClientState state) {
+        this.state = state;
+    }
+
     //Methods which are sending commands to the server
     private String sendCommand(String command) throws IOException {
         out.write(command + "\n");
@@ -42,28 +48,22 @@ public class Client {
         return in.readLine();
     }
     public String registerUser(String username) throws IOException{
-        String command = "reg;" + username;
-        return sendCommand(command);
+        return sendCommand(state.registerUser(this, username));
     }
     public String createChat(String receiverUsername) throws IOException {
-        String command = "createChat;" + receiverUsername;
-        return sendCommand(command);
+        return sendCommand(state.createChat(this, receiverUsername));
     }
     public String createGroup(String groupName, String... members) throws IOException {
-        String command = "createGroup;" + groupName + ";" + String.join(";", members);
-        return sendCommand(command);
+        return sendCommand(state.createGroup(this, groupName, members));
     }
     public String sendMessage(int chatid, String message) throws IOException {
-        String command = "chat;" + chatid + ";" + message;
-        return sendCommand(command);
+        return sendCommand(state.sendMessage(this, chatid, message));
     }
     public String getChatName(int chatid) throws IOException {
-        String command = "getChatName;" + chatid;
-        return sendCommand(command);
+        return sendCommand(state.getChatName(this, chatid));
     }
     public String getChatIds() throws IOException {
-        String command = "getChatIds;";
-        return sendCommand(command);
+        return sendCommand(state.getChatIds(this));
     }
     public void disconnect() throws IOException {
         closeResources();
@@ -119,7 +119,7 @@ public class Client {
     }
 
     // Метод для закрытия всех ресурсов
-    private void closeResources() {
+    protected void closeResources() {
         try {
             if (consoleReader != null) consoleReader.close();
             if (in != null) in.close();
