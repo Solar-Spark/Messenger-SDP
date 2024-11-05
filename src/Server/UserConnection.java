@@ -2,7 +2,6 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class UserConnection{
     private BufferedReader in;
@@ -43,18 +42,20 @@ public class UserConnection{
                     userFromList.setConnected(true);
                     sendMessage("status;connected");
                     System.out.println("User " + username + " is logged in");
-                    ArrayList<Integer> chatIds = userFromList.getChatIds();
-                    if(!chatIds.isEmpty()){
-                        for(int chatId : chatIds){
-                            ChatsController.getChat(chatId).getMessages(userFromList);
-                        }
-                    }
+                    user = userFromList;
+                    getMessages();
                     break;
                 }
             }
         }
     }
-
+    public void getMessages() throws IOException {
+        if(!user.getChatIds().isEmpty()){
+            for(int chatId : user.getChatIds()){
+                ChatsController.getChat(chatId).getMessages(user);
+            }
+        }
+    }
     public Socket getSocket() {
         return socket;
     }
