@@ -353,62 +353,67 @@ public class HelloApplication extends Application {
 
 
 
-    //Open create group chat window
+    // Open create group chat window
     private void openCreateGroupChatWindow() {
         Stage createGroupChatStage = new Stage();
         createGroupChatStage.setTitle("Create Group chat");
 
-        // UI components for nickname input
+        // Set initial size of the window (400x200) so that the TextFields can reference it
+        createGroupChatStage.setWidth(400);  // Initial width
+        createGroupChatStage.setHeight(200); // Initial height
+
+        // UI components for group chat name and members input
         TextField groupChatNameTextFiled = new TextField();
         groupChatNameTextFiled.setPromptText("Enter group chat name");
 
-        // Bind the TextField's preferred width to 60% of the window width
-       groupChatNameTextFiled.prefWidthProperty().bind(createGroupChatStage.widthProperty().multiply(0.6));
 
         TextField groupChatMembersTextFiled = new TextField();
         groupChatMembersTextFiled.setPromptText("Enter group chat members");
 
-        groupChatNameTextFiled.prefWidthProperty().bind(createGroupChatStage.widthProperty().multiply(0.6));
+
 
         Button submitButton = new Button("Submit");
 
-        // Layout for the creat chat window
-        VBox createChatLayout = new VBox(10);
+        // Layout for the create chat window
+        VBox createChatLayout = new VBox(10); // Space between elements
         createChatLayout.setAlignment(Pos.CENTER);
 
-        // Centering input area using HBox
-        HBox createChatInputContainer = new HBox();
+        // Arrange input fields vertically (one under the other)
+        VBox createChatInputContainer = new VBox(10); // Adjust the spacing between the fields
         createChatInputContainer.setAlignment(Pos.CENTER);
-        createChatInputContainer.getChildren().add(groupChatNameTextFiled);
-        createChatInputContainer.getChildren().add(groupChatMembersTextFiled);
+        createChatInputContainer.getChildren().addAll(groupChatNameTextFiled, groupChatMembersTextFiled);
+
+
+        createChatInputContainer.maxWidthProperty().bind(createGroupChatStage.widthProperty().multiply(0.6));
 
         createChatLayout.getChildren().addAll(createChatInputContainer, submitButton);
 
-        // Event handler for submitting nickname
-        submitButton.setOnAction(event -> {
 
+
+        // Event handler for submitting
+        submitButton.setOnAction(event -> {
             String groupChatName = groupChatNameTextFiled.getText();
             String groupChatMembers = groupChatMembersTextFiled.getText();
 
             if (!groupChatName.trim().isEmpty() && !groupChatMembers.trim().isEmpty()) {
                 System.out.println("Group chat name: " + groupChatName);
-                System.out.println("Group chat members: " + groupChatName);
-                createGroupChatStage.close(); // Close nickname window
-
+                System.out.println("Group chat members: " + groupChatMembers);
+                createGroupChatStage.close(); // Close the window on successful input
             } else {
-                // If nickname is empty, show error message
-                Alert alert = new Alert(Alert.AlertType.WARNING, "Nickname cannot be empty!", ButtonType.OK);
+                // Show error message if fields are empty
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Fields cannot be empty!", ButtonType.OK);
                 alert.showAndWait();
             }
         });
 
-        // Setup the nickname stage with consistent size (400x200)
-        Scene creatChatScene = new Scene(createChatLayout, 400, 200); // Window size 400x200
-        createGroupChatStage.setScene(creatChatScene);
+        // Setup the scene with the layout
+        Scene createChatScene = new Scene(createChatLayout, 400, 200);
+        createGroupChatStage.setScene(createChatScene);
         createGroupChatStage.show();
 
-        // Set focus to the Nickname TextField automatically when the window opens
+        // Automatically focus on the group chat name text field
         groupChatNameTextFiled.requestFocus();
     }
+
 
 }
