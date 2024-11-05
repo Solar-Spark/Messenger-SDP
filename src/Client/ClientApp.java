@@ -294,10 +294,17 @@ public class ClientApp extends Application {
 
 
         sendButton.setOnAction(event -> {
+
             String message = messageInput.getText().trim();
+
             if (!message.isEmpty()) {
-                chatArea.appendText(nickname + ": " + message + "\n");
-                messageInput.clear(); // Clear the message input field after sending
+                try {
+                    ClientViewModel.sendMessage(message);
+                    messageInput.clear(); // Clear the message input field after sending
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+
             }
         });
 
@@ -316,6 +323,7 @@ public class ClientApp extends Application {
             String selectedChat = chatList.getSelectionModel().getSelectedItem();
 
             if (selectedChat != null) {
+
                 // Display the selected chat's history or open chat window
                 System.out.println("Selected chat: " + selectedChat);
 
@@ -354,8 +362,15 @@ public class ClientApp extends Application {
         submitButton.setOnAction(event -> {
             String nickname = createChatTextField.getText();
             if (!nickname.trim().isEmpty()) {
-                System.out.println("Creat chat username's nickname: " + nickname);
-                createChatStage.close(); // Close nickname window
+
+                try {
+                    ClientViewModel.createChat(nickname);
+                    System.out.println("Creat chat username's nickname: " + nickname);
+                    createChatStage.close(); // Close nickname window
+                } catch (IOException e) {
+                   System.out.println("Error creating chat: " + e.getMessage());
+                }
+
 
             } else {
                 // If nickname is empty, show error message
@@ -418,9 +433,18 @@ public class ClientApp extends Application {
             String groupChatMembers = groupChatMembersTextFiled.getText();
 
             if (!groupChatName.trim().isEmpty() && !groupChatMembers.trim().isEmpty()) {
-                System.out.println("Group chat name: " + groupChatName);
-                System.out.println("Group chat members: " + groupChatMembers);
-                createGroupChatStage.close(); // Close the window on successful input
+
+                try {
+
+                    ClientViewModel.createGroup(groupChatMembers + "," + groupChatMembers);
+                    System.out.println("Group chat name: " + groupChatName);
+                    System.out.println("Group chat members: " + groupChatMembers);
+                    createGroupChatStage.close(); // Close the window on successful input
+
+                } catch (IOException e) {
+                    System.out.println("Error creating group: " + e.getMessage());
+                }
+
             } else {
                 // Show error message if fields are empty
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Fields cannot be empty!", ButtonType.OK);
