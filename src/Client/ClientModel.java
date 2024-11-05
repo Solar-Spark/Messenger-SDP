@@ -2,17 +2,21 @@ package Client;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 
-public class Client {
+public class ClientModel {
 
-    private Socket clientSocket;
-    private BufferedReader consoleReader;
-    private BufferedReader in;
-    private BufferedWriter out;
-    private ReadMsg readMsg;
-    private WriteMsg writeMsg;
+    private static Socket clientSocket;
+    private static BufferedReader consoleReader;
+    private static BufferedReader in;
+    private static BufferedWriter out;
+    private static ReadMsg readMsg;
+    private static WriteMsg writeMsg;
+    private static ClientState state;
+    private static int currentChatId;
+    private static ArrayList<Integer> chatIds = new ArrayList<>();
 
-    public Client(String host, int port) {
+    public ClientModel(String host, int port) {
         try {
             // Создаем сокетное соединение с сервером
             clientSocket = new Socket(host, port);
@@ -22,6 +26,7 @@ public class Client {
             consoleReader = new BufferedReader(new InputStreamReader(System.in));
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            state = new ConnectedState();
 
             // Запускаем потоки для отправки и приема сообщений
             readMsg = new ReadMsg();
@@ -35,10 +40,47 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) {
-        // Запускаем клиента на указанном хосте и порту
-        new Client("localhost", 8080);
+    public static void setState(ClientState clientState) {
+        state = clientState;
     }
+
+    //Methods which are sending commands to the server
+    private static String sendCommand(String command) throws IOException {
+        out.write(command + "\n");
+        out.flush();
+        return in.readLine();
+    }
+    public static String registerUser(String username) throws IOException{
+        return sendCommand(state.registerUser(username));
+    }
+    public static String createChat(String receiverUsername) throws IOException {
+        return sendCommand(state.createChat(receiverUsername));
+    }
+    public static String createGroup(String groupChat) throws IOException {
+        return sendCommand(state.createGroup(groupChat));
+    }
+    public static String sendMessage(String message) throws IOException {
+        return sendCommand(state.sendMessage(currentChatId, message));
+    }
+    public static String getChatName(int chatid) throws IOException {
+        return sendCommand(state.getChatName(chatid));
+    }
+    public static String getChatIds() throws IOException {
+        return sendCommand(state.getChatIds());
+    }
+    public static void disconnect() throws IOException {
+        state.disconnect();
+    }
+    public static void setChatId(int chatid) throws IOException {
+        currentChatId = chatid;
+    }
+    public static void receiveMessage(int chatid, String message) throws IOException {
+
+    }
+//    public static void main(String[] args) {
+//        // Запускаем клиента на указанном хосте и порту
+//        new Client("localhost", 8080);
+//    }
 
     // Поток для чтения сообщений от сервера
     private class ReadMsg extends Thread {
@@ -85,7 +127,7 @@ public class Client {
     }
 
     // Метод для закрытия всех ресурсов
-    private void closeResources() {
+    public static void closeResources() {
         try {
             if (consoleReader != null) consoleReader.close();
             if (in != null) in.close();
