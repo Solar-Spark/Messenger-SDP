@@ -179,7 +179,7 @@ public class ClientApp extends Application {
                 try {
 
                     ClientViewModel.registerUser(nickname);
-
+                    System.out.println(nickname + " registered");
                     // Close nickname window
                     nicknameStage.close();
                     // Open the chat interface

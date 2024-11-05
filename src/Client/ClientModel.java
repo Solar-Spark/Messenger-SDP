@@ -45,10 +45,9 @@ public class ClientModel {
         state = clientState;
     }
 
-    public static String sendCommand(String command) throws IOException {
+    public static void sendCommand(String command) throws IOException {
         out.write(command + "\n");
         out.flush();
-        return in.readLine();
     }
     public static void getMessages() throws IOException {
         sendCommand(state.getMessages(currentChatId));
