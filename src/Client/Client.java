@@ -66,7 +66,7 @@ public class Client {
         return sendCommand(state.getChatIds(this));
     }
     public void disconnect() throws IOException {
-        closeResources();
+        state.disconnect(this);
     }
 
 //    public static void main(String[] args) {

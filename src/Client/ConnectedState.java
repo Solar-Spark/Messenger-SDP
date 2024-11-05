@@ -33,6 +33,7 @@ public class ConnectedState implements ClientState{
     }
     @Override
     public void disconnect(Client client) {
+        client.setState(new DisconnectedState());
         client.closeResources();
     }
 }
