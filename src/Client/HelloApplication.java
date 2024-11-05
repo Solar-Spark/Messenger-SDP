@@ -315,7 +315,6 @@ public class HelloApplication extends Application {
         createChatTextField.prefWidthProperty().bind(createChatStage.widthProperty().multiply(0.6));
 
         Button submitButton = new Button("Submit");
-        submitButton.prefWidthProperty().bind(createChatStage.widthProperty().multiply(0.6));
 
         // Layout for the creat chat window
         VBox createChatLayout = new VBox(10);
