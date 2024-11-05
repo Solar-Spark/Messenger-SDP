@@ -28,5 +28,7 @@ public class ClientViewModel {
     public static void receiveMessage(String message) throws IOException {
         HelloApplication.getChatArea().appendText(message);
     }
-
+    public static void initClientModel(String host) throws IOException {
+        ClientModel.clientModelInit(host, 8080);
+    }
 }

@@ -19,7 +19,7 @@ public class ClientModel {
     private static Map<Integer, String> chatList = new HashMap<>();
     private static String chatName;
 
-    public void clientModelInit(String host, int port) {
+    public static void clientModelInit(String host, int port) {
         try {
             // Создаем сокетное соединение с сервером
             clientSocket = new Socket(host, port);
