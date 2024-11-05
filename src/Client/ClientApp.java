@@ -8,13 +8,13 @@ import javafx.stage.*;
 import javafx.geometry.*;
 import javafx.scene.text.*;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HelloApplication extends Application {
+public class ClientApp extends Application {
 
 
     private static TextArea chatArea;
@@ -65,8 +65,17 @@ public class HelloApplication extends Application {
                 if (isValidIPAddress(ip)) {
                     // IP is valid, proceed to next window
                     System.out.println("IP Address: " + ip);
-                    primaryStage.close();
-                    openNicknameWindow();
+                    try {
+
+                        ClientViewModel.initClientModel(ip);
+                        primaryStage.close();
+                        openNicknameWindow();
+
+                    } catch (IOException e) {
+                         System.out.println(e.getMessage());
+                    }
+
+
                 } else {
                     // Invalid IP address according to InetAddress
                     errorLabel.setText("Invalid IP address format!");
@@ -163,11 +172,25 @@ public class HelloApplication extends Application {
         // Event handler for submitting nickname
         submitButton.setOnAction(event -> {
             String nickname = nicknameTextField.getText();
+
             if (!nickname.trim().isEmpty()) {
                 System.out.println("User's nickname: " + nickname);
-                nicknameStage.close(); // Close nickname window
-                // Open the chat interface
-                openChatWindow(nickname);
+
+                try {
+
+                    ClientViewModel.registerUser(nickname);
+
+                    // Close nickname window
+                    nicknameStage.close();
+                    // Open the chat interface
+                    openChatWindow(nickname);
+                } catch (IOException e) {
+
+                   System.out.println(e.getMessage());
+
+                }
+
+
             } else {
                 // If nickname is empty, show error message
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Nickname cannot be empty!", ButtonType.OK);

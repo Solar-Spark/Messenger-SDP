@@ -44,6 +44,7 @@ public class ClientModel {
     public static void setState(ClientState clientState) {
         state = clientState;
     }
+
     public static String sendCommand(String command) throws IOException {
         out.write(command + "\n");
         out.flush();
@@ -52,23 +53,23 @@ public class ClientModel {
     public static void getMessages() throws IOException {
         sendCommand(state.getMessages(currentChatId));
     }
-    public static String registerUser(String username) throws IOException{
-        return sendCommand(state.registerUser(username));
+    public static void registerUser(String username) throws IOException{
+        sendCommand(state.registerUser(username));
     }
-    public static String createChat(String receiverUsername) throws IOException {
-        return sendCommand(state.createChat(receiverUsername));
+    public static void createChat(String receiverUsername) throws IOException {
+        sendCommand(state.createChat(receiverUsername));
     }
-    public static String createGroup(String groupChat) throws IOException {
-        return sendCommand(state.createGroup(groupChat));
+    public static void createGroup(String groupChat) throws IOException {
+       sendCommand(state.createGroup(groupChat));
     }
-    public static String requestMessage(String message) throws IOException {
-        return sendCommand(state.sendMessage(currentChatId, message));
+    public static void requestMessage(String message) throws IOException {
+        sendCommand(state.sendMessage(currentChatId, message));
     }
-    public static String requestChatName(int chatId) throws IOException {
-        return sendCommand(state.getChatName(chatId));
+    public static void requestChatName(int chatId) throws IOException {
+        sendCommand(state.getChatName(chatId));
     }
-    public static String getChatIds() throws IOException {
-        return sendCommand(state.getChatIds());
+    public static void  getChatIds() throws IOException {
+        sendCommand(state.getChatIds());
     }
     public static void disconnect() throws IOException {
         state.disconnect();

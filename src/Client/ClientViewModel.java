@@ -1,6 +1,5 @@
 package Client;
 
-import java.awt.*;
 import java.io.IOException;
 
 public class ClientViewModel {
@@ -26,7 +25,7 @@ public class ClientViewModel {
     }
     //receives message from server into chat area(into the chat on group)
     public static void receiveMessage(String message) throws IOException {
-        HelloApplication.getChatArea().appendText(message);
+        ClientApp.getChatArea().appendText(message);
     }
     public static void initClientModel(String host) throws IOException {
         ClientModel.clientModelInit(host, 8080);
