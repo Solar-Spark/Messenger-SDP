@@ -83,7 +83,7 @@ public class ClientModel {
     }
     public static void addChat(int chatId, String chatNameParam) throws IOException {
         currentChatId = chatId;
-        setChatName(currentChatId, chatNameParam);
+        ClientViewModel.addChat(chatId, chatNameParam);
     }
     public static void receiveMessage(int chatId, String senderUserName, String message) throws IOException {
         ClientViewModel.receiveMessage(senderUserName + ": " + message + "\n");
@@ -93,7 +93,6 @@ public class ClientModel {
     }
     public static void setChatName(int chatId, String name) throws IOException {
         chatList.put(chatId, name);
-        ClientViewModel.addChat(chatId, name);
     }
     public static String getUsername(){
         return username;

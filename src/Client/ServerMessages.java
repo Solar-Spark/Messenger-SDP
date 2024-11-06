@@ -9,7 +9,7 @@ public class ServerMessages {
         switch (params[0]) {
             case "chatId":
                 chatId = Integer.parseInt(params[1]);
-                ClientModel.addChat(chatId, ClientModel.getChatName(chatId));
+                ClientModel.setChatName(chatId, ClientModel.getChatName(chatId));
                 break;
             case "chatName":
                 chatId = Integer.parseInt(params[1]);
