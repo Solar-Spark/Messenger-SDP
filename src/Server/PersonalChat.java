@@ -30,10 +30,10 @@ public class PersonalChat implements Chat {
             }
         }
     }
-    public void sendMessage(String msg) throws IOException {
+    public void sendCreateMessage(String msg) throws IOException {
         for(User user : users){
             if(user.hasChat(id)){
-                user.sendMessage(msg);
+                user.sendMessage(msg + getName(user));
             }
         }
     }

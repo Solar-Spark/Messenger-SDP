@@ -64,7 +64,7 @@ public class GroupDecorator implements Chat{
     }
 
     @Override
-    public void sendMessage(String msg) throws IOException {
+    public void sendCreateMessage(String msg) throws IOException {
         for(User user : chat.getUsers()){
             if(user.hasChat(chat.getId())){
                 user.sendMessage(msg);
