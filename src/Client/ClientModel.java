@@ -93,7 +93,6 @@ public class ClientModel {
     }
     public static void setChatName(int chatId, String name) throws IOException {
         chatList.put(chatId, name);
-        ClientViewModel.addChat(chatId, name);
     }
     public static String getUsername(){
         return username;
