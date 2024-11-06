@@ -62,7 +62,7 @@ public class PersonalChat implements Chat {
     @Override
     public String getName(User user){
         for(User usr : users){
-            if(usr != user){
+            if(!usr.getUsername().equals(user.getUsername())){
                 return usr.getUsername();
             }
         }

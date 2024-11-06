@@ -80,10 +80,14 @@ public class ClientModel {
         currentChatId = chatId;
         chatName = state.getChatName(chatId);
     }
-    public static void addChat(int chatId, String chatName) throws IOException {
+    public static ClientState getState(){
+        return state;
+    }
+    public static void addChat(int chatId, String chatNameParam) throws IOException {
         currentChatId = chatId;
-        chatList.put(chatId, chatName);
-        ClientViewModel.addChat(chatId, chatName);
+        chatList.put(chatId, chatNameParam);
+        setChatName(currentChatId, chatNameParam);
+        ClientViewModel.addChat(chatId, chatNameParam);
     }
     public static void receiveMessage(int chatId, String senderUserName, String message) throws IOException {
         ClientViewModel.receiveMessage(senderUserName + ": " + message + "\n");
@@ -91,13 +95,20 @@ public class ClientModel {
     public static void receiveGroupMessage(String username, String message) throws IOException {
         ClientViewModel.receiveMessage(username + ": " + message + "\n");
     }
-    public static void setChatName(String name) throws IOException {
+    public static void setChatName(int chatId, String name) throws IOException {
+        chatList.put(chatId, name);
+        currentChatId = chatId;
         chatName = name;
     }
     public static String getUsername(){
         return username;
     }
-
+    public static String getChatName(int chatId) throws IOException {
+        requestChatName(chatId);
+        String chatNameReturn = chatList.get(chatId);
+        System.out.println("Chat Name: " + chatNameReturn);
+        return chatNameReturn;
+    }
     // Поток для чтения сообщений от сервера
     private static class ReadMsg extends Thread {
         @Override
