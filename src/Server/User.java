@@ -3,7 +3,7 @@ package Server;
 import java.io.*;
 import java.util.ArrayList;
 
-public class User{
+public class User implements SubscriberUser{
     private String username;
     private UserConnection userCon;
     private boolean connected;

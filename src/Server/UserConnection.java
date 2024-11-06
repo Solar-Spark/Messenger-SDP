@@ -62,8 +62,9 @@ public class UserConnection{
         @Override
         public void run() {
             try {
+                MessageFactoryInterface messageFactory = new MessageFactory();
                 Message msg;
-                while ((msg = new Message(user, in.readLine())).getMessageText() != null) {
+                while ((msg = messageFactory.createMessage(user, in.readLine())).getMessageText() != null) {
                     MessageListener.parse(msg);
                     System.out.println(msg.getMessageText());
                     //System.out.println(user.getUsername() + " printed " + msg.getMessageText());
