@@ -87,7 +87,9 @@ public class ClientModel {
         ClientViewModel.addChat(chatId,chatNameParam);
     }
     public static void receiveMessage(int chatId, String senderUserName, String message) throws IOException {
-        ClientViewModel.receiveMessage(senderUserName + ": " + message + "\n");
+        if(currentChatId == chatId){
+            ClientViewModel.receiveMessage(senderUserName + ": " + message + "\n");
+        }
     }
     public static void receiveGroupMessage(String username, String message) throws IOException {
         ClientViewModel.receiveMessage(username + ": " + message + "\n");
