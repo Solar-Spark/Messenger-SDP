@@ -25,7 +25,7 @@ public class PersonalChat implements Chat {
         for(User user : users){
             if(user != msg.getUser()){
                 if(user.hasChat(id)){
-                    user.sendMessage("chat;" + id + ";" + msg.getMessageText().split(";")[2]);
+                    user.sendMessage("chat;" + id + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
                 }
             }
         }
@@ -40,7 +40,7 @@ public class PersonalChat implements Chat {
     public void getMessages(User user) throws IOException {
         if(!messages.isEmpty()) {
             for (Message msg : messages) {
-                user.sendMessage("chat;" + id + ";" + msg.getMessageText().split(";")[2]);
+                user.sendMessage("chat;" + id + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
             }
         }
     }

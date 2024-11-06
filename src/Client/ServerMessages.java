@@ -9,14 +9,14 @@ public class ServerMessages {
         switch (params[0]) {
             case "chatId":
                 chatId = Integer.parseInt(params[1]);
-                ClientModel.addChat(chatId);
+                ClientModel.addChat(chatId, params[2]);
                 break;
             case "chatName":
                 ClientModel.setChatName(params[1]);
                 break;
             case "chat":
                 chatId = Integer.parseInt(params[1]);
-                ClientModel.receiveMessage(chatId, params[2]);
+                ClientModel.receiveMessage(chatId, params[2], params[3]);
                 break;
             case "group":
                 chatId = Integer.parseInt(params[1]);

@@ -22,6 +22,7 @@ public class ClientApp extends Application {
     private static TextArea chatArea;
     private static Map<String, Integer> chatMap = new HashMap<String, Integer>();
     private static ListView<String> chatList;
+    private static Stage chatStage;
 
     public static TextArea getChatArea() {
         return chatArea;
@@ -38,6 +39,7 @@ public class ClientApp extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 
     @Override
     public void start(Stage primaryStage) {
@@ -242,7 +244,7 @@ public class ClientApp extends Application {
             return cell;
         });
 
-        chatList.getItems().addAll();
+
 
         // Create the chat area on the right (taking more space)
         chatArea = new TextArea();
@@ -328,11 +330,6 @@ public class ClientApp extends Application {
         chatList.setOnMouseClicked(event -> {
             // Get the selected item from the list
             String selectedChat = chatList.getSelectionModel().getSelectedItem();
-            try {
-                ClientViewModel.setChatId(getChatMap().get(selectedChat));
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
             if (selectedChat != null) {
 
                 // Display the selected chat's history or open chat window
@@ -340,6 +337,11 @@ public class ClientApp extends Application {
 
                 // For now, we can show the history of the selected chat in the chat area
                 //chatArea.setText(); // Populate chat area with history of the selected chat
+            }
+            try {
+                ClientViewModel.setChatId(getChatMap().get(selectedChat));
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         });
     }
@@ -445,7 +447,7 @@ public class ClientApp extends Application {
 
                 try {
 
-                    ClientViewModel.createGroup(groupChatMembers + "," + groupChatMembers);
+                    ClientViewModel.createGroup(groupChatName + "," + groupChatMembers);
                     System.out.println("Group chat name: " + groupChatName);
                     System.out.println("Group chat members: " + groupChatMembers);
                     createGroupChatStage.close(); // Close the window on successful input

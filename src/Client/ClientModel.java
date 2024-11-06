@@ -14,8 +14,9 @@ public class ClientModel {
     private static BufferedReader in;
     private static BufferedWriter out;
     private static ReadMsg readMsg;
-    private static ClientState state;
+    private static ClientState state = new DisconnectedState();
     private static int currentChatId;
+    private static String username;
     private static Map<Integer, String> chatList = new HashMap<>();
     private static String chatName;
 
@@ -52,8 +53,10 @@ public class ClientModel {
     public static void getMessages() throws IOException {
         sendCommand(state.getMessages(currentChatId));
     }
-    public static void registerUser(String username) throws IOException{
+    public static void registerUser(String nickName) throws IOException{
+        username = nickName;
         sendCommand(state.registerUser(username));
+
     }
     public static void createChat(String receiverUsername) throws IOException {
         sendCommand(state.createChat(receiverUsername));
@@ -75,19 +78,24 @@ public class ClientModel {
     }
     public static void setChatId(int chatId) throws IOException {
         currentChatId = chatId;
+        chatName = state.getChatName(chatId);
     }
-    public static void addChat(int chatId) throws IOException {
+    public static void addChat(int chatId, String chatName) throws IOException {
+        currentChatId = chatId;
         chatList.put(chatId, chatName);
         ClientViewModel.addChat(chatId, chatName);
     }
-    public static void receiveMessage(int chatId, String message) throws IOException {
-        ClientViewModel.receiveMessage(chatList.get(chatId) + ": " + message + "\n");
+    public static void receiveMessage(int chatId, String senderUserName, String message) throws IOException {
+        ClientViewModel.receiveMessage(senderUserName + ": " + message + "\n");
     }
     public static void receiveGroupMessage(String username, String message) throws IOException {
         ClientViewModel.receiveMessage(username + ": " + message + "\n");
     }
     public static void setChatName(String name) throws IOException {
         chatName = name;
+    }
+    public static String getUsername(){
+        return username;
     }
 
     // Поток для чтения сообщений от сервера

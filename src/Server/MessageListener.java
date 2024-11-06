@@ -17,7 +17,7 @@ public class MessageListener {
                 personalChat.subscribe(msg.getUser());
                 try{
                     personalChat.subscribe(UserController.getUser(params[1]));
-                    personalChat.sendMessage("chatId;" + id);
+                    personalChat.sendMessage("chatId;" + id + ";" + personalChat.getName(msg.getUser()));
                 }
                 catch(Exception e){
                     System.out.println(e.getMessage());
@@ -30,7 +30,7 @@ public class MessageListener {
                 for(int i = 2; i < params.length; i++) {
                     group.subscribe(UserController.getUser(params[i]));
                 }
-                group.sendMessage("chatId;" + id);
+                group.sendMessage("chatId;" + id + ";" + group.getName(msg.getUser()));
             }
             else if (params[0].equals("chat")){
                 int chatId = Integer.parseInt(params[1]);

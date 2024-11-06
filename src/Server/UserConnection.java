@@ -43,16 +43,8 @@ public class UserConnection{
                     sendMessage("status;connected");
                     System.out.println("User " + username + " is logged in");
                     user = userFromList;
-                    getMessages();
                     break;
                 }
-            }
-        }
-    }
-    public void getMessages() throws IOException {
-        if(!user.getChatIds().isEmpty()){
-            for(int chatId : user.getChatIds()){
-                ChatsController.getChat(chatId).getMessages(user);
             }
         }
     }
@@ -73,6 +65,7 @@ public class UserConnection{
                 Message msg;
                 while ((msg = new Message(user, in.readLine())).getMessageText() != null) {
                     MessageListener.parse(msg);
+                    System.out.println(msg.getMessageText());
                     //System.out.println(user.getUsername() + " printed " + msg.getMessageText());
                 }
             }
