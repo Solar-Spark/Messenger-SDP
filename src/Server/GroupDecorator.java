@@ -52,22 +52,22 @@ public class GroupDecorator implements Chat{
     }
 
     @Override
-    public void sendMessage(Message msg) throws IOException {
-        chat.getMessagesHistory().add(msg);
-        for(User user : chat.getUsers()){
-            if(user != msg.getUser()){
-                if(user.hasChat(chat.getId())){
-                    user.sendMessage("group;" + chat.getId() + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
+    public void sendMessage(Message msg, String param) throws IOException {
+        if(param.equals("message")) {
+            chat.getMessagesHistory().add(msg);
+            for(User user : chat.getUsers()){
+                if(user != msg.getUser()){
+                    if(user.hasChat(chat.getId())){
+                        user.sendMessage("group;" + chat.getId() + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
+                    }
                 }
             }
         }
-    }
-
-    @Override
-    public void sendCreateMessage(String msg) throws IOException {
-        for(User user : chat.getUsers()){
-            if(user.hasChat(chat.getId())){
-                user.sendMessage(msg);
+        else if(param.equals("create")) {
+            for (User user : chat.getUsers()) {
+                if (user.hasChat(chat.getId())) {
+                    user.sendMessage(msg.getMessageText());
+                }
             }
         }
     }

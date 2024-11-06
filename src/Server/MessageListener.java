@@ -16,8 +16,9 @@ public class MessageListener {
                 Chat personalChat = ChatsController.getChat(id);
                 personalChat.subscribe(msg.getUser());
                 try{
+                    MessageFactoryInterface messageFactory = new MessageFactory();
                     personalChat.subscribe(UserController.getUser(params[1]));
-                    personalChat.sendCreateMessage("chatId;" + id + ";");
+                    personalChat.sendMessage(messageFactory.createMessage(msg.getUser(),"chatId;" + id + ";"), "create");
                 }
                 catch(Exception e){
                     System.out.println(e.getMessage());
@@ -30,11 +31,12 @@ public class MessageListener {
                 for(int i = 2; i < params.length; i++) {
                     group.subscribe(UserController.getUser(params[i]));
                 }
-                group.sendCreateMessage("chatId;" + id + ";" + group.getName(msg.getUser()));
+                MessageFactoryInterface messageFactory = new MessageFactory();
+                group.sendMessage(messageFactory.createMessage(msg.getUser(),"chatId;" + id + ";" + group.getName(msg.getUser())), "create");
             }
             else if (params[0].equals("chat")){
                 int chatId = Integer.parseInt(params[1]);
-                ChatsController.getChat(chatId).sendMessage(msg);
+                ChatsController.getChat(chatId).sendMessage(msg, "message");
             }
             else if (params[0].equals("getChatName")){
                 int chatId = Integer.parseInt(params[1]);

@@ -20,20 +20,22 @@ public class PersonalChat implements Chat {
         users.remove(user);
     }
 
-    public void sendMessage(Message msg) throws IOException {
-        messages.add(msg);
-        for(User user : users){
-            if(user != msg.getUser()){
-                if(user.hasChat(id)){
-                    user.sendMessage("chat;" + id + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
+    public void sendMessage(Message msg, String param) throws IOException {
+        if(param.equals("message")) {
+            messages.add(msg);
+            for (User user : users) {
+                if (user != msg.getUser()) {
+                    if (user.hasChat(id)) {
+                        user.sendMessage("chat;" + id + ";" + msg.getUser().getUsername() + ";" + msg.getMessageText().split(";")[2]);
+                    }
                 }
             }
         }
-    }
-    public void sendCreateMessage(String msg) throws IOException {
-        for(User user : users){
-            if(user.hasChat(id)){
-                user.sendMessage(msg + getName(user));
+        else if (param.equals("create")) {
+            for(User user : users){
+                if(user.hasChat(id)){
+                    user.sendMessage(msg.getMessageText() + getName(user));
+                }
             }
         }
     }
