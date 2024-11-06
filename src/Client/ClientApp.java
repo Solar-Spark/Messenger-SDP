@@ -329,7 +329,7 @@ public class ClientApp extends Application {
         HBox.setHgrow(chatArea, Priority.ALWAYS);
 
         // Setup the chat stage with larger size
-        Scene chatScene = new Scene(chatLayout, 600, 400); // Window size 600x400
+        Scene chatScene = new Scene(chatLayout, 800, 400); // Window size 600x400
         chatStage.setScene(chatScene);
         chatStage.show();
 
