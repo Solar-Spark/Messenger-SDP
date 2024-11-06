@@ -77,7 +77,6 @@ public class ClientModel {
     }
     public static void setChatId(int chatId) throws IOException {
         currentChatId = chatId;
-        chatName = state.getChatName(chatId);
     }
     public static ClientState getState(){
         return state;
