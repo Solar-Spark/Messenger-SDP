@@ -17,7 +17,7 @@ public class MessageListener {
                 personalChat.subscribe(msg.getUser());
                 try{
                     personalChat.subscribe(UserController.getUser(params[1]));
-                    personalChat.sendMessage("chatId;" + id);
+                    personalChat.sendMessage("chatId;" + id + ";" + personalChat.getName(msg.getUser()));
                 }
                 catch(Exception e){
                     System.out.println(e.getMessage());
