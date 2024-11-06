@@ -111,6 +111,7 @@ public class ClientModel {
             try {
                 String message;
                 while ((message = in.readLine()) != null) {
+                    System.out.println("Server printed: " + message);
                     ServerMessages.parse(message);
                 }
             } catch (IOException e) {
