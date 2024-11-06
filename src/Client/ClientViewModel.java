@@ -47,4 +47,7 @@ public class ClientViewModel {
         ClientApp.getChatList().getItems().add(chatName);
         System.out.println(ClientApp.getChatMap().get(chatName) + " from map");
     }
+    public static void disconnect() throws IOException {
+        ClientModel.disconnect();
+    }
 }
