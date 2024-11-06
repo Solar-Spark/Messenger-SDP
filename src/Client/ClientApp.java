@@ -1,6 +1,8 @@
 package Client;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -112,6 +114,24 @@ public class ClientApp extends Application {
         primaryStage.setScene(mainScene);
         primaryStage.show();
 
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+         @Override
+         public void handle(WindowEvent event) {
+             Platform.runLater(new Runnable() {
+
+                 @Override
+                 public void run() {
+                     try {
+                         ClientViewModel.disconnect();
+                     } catch (IOException e) {
+                         System.out.println(e.getMessage());
+                     }
+                     System.exit(0);
+                 }
+             });
+         }
+     });
         // Do not set focus to the IP TextField
         // (So that the mouse must be clicked to focus on the input)
     }
@@ -214,6 +234,18 @@ public class ClientApp extends Application {
 
         // Set focus to the Nickname TextField automatically when the window opens
         nicknameTextField.requestFocus();
+        nicknameStage.setOnCloseRequest(event -> Platform.runLater(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    ClientViewModel.disconnect();
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+                System.exit(0);
+            }
+        }));
     }
 
     // Method to create a new window for the chat interface
@@ -344,6 +376,25 @@ public class ClientApp extends Application {
                 System.out.println(e.getMessage());
             }
         });
+
+        chatStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+         @Override
+         public void handle(WindowEvent event) {
+             Platform.runLater(new Runnable() {
+
+                 @Override
+                 public void run() {
+                     try {
+                         ClientViewModel.disconnect();
+                     } catch (IOException e) {
+                         System.out.println(e.getMessage());
+                     }
+                     System.exit(0);
+                 }
+             });
+         }
+     });
     }
 
     //Open create chat window
